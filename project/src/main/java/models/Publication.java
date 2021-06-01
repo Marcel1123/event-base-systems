@@ -5,6 +5,8 @@ import lombok.Getter;
 
 import java.util.Date;
 
+import utils.Constant;
+
 @Getter
 @Builder
 public class Publication {
@@ -19,13 +21,13 @@ public class Publication {
     @Override
     public String toString() {
         return "{" +
-                "(stationId," + stationId +
-                "),(city,\"" + city + '\"' +
-                "),(temp," + temp +
-                "),(rain," + rain +
-                "),(wind," + wind +
-                "),(direction,\"" + direction + '\"' +
-                "),(data," + data +
+                "("+ Constant.StationId +"," + stationId +
+                "),("+ Constant.City +",\"" + city + '\"' +
+                "),("+ Constant.Temp + "," + temp +
+                "),(" + Constant.Rain+ "," + rain +
+                "),("+Constant.Wind+"," + wind +
+                "),("+Constant.Direction+",\"" + direction + '\"' +
+                "),("+Constant.Data +"," + data +
                 ")}";
     }
 }
