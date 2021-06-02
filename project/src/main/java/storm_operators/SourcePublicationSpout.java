@@ -1,5 +1,6 @@
 package storm_operators;
 
+import lombok.SneakyThrows;
 import models.Publication;
 import org.apache.storm.spout.SpoutOutputCollector;
 import org.apache.storm.task.TopologyContext;
@@ -30,32 +31,24 @@ public class SourcePublicationSpout extends BaseRichSpout {
         this.task = topologyContext.getThisComponentId()+" "+topologyContext.getThisTaskId();
         System.out.println("----- Started spout task: "+ this.task);
 
-        this.tasks = topologyContext.getComponentTasks(Constant.TERMINAL_BOLT_ID);
+        //this.tasks = topologyContext.getComponentTasks(Constant.TERMINAL_BOLT_ID);
     }
 
+    @SneakyThrows
     @Override
     public void nextTuple() {
         Publication publication = PublicationGenerator.createNewPublication();
         //Publication global_publication = publication;
         // System.out.println(publication);
         this.collector.emit(new Values(publication));
-        this.collector.emitDirect((int)tasks.get(0), "secondary", new Values(publication));
+        //this.collector.emitDirect((int)tasks.get(0), "secondary", new Values(publication));
+        // Thread.sleep(50);
     }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
         outputFieldsDeclarer.declare(new Fields("publication"));
-        outputFieldsDeclarer.declareStream("secondary", true, new Fields("publication"));
-    }
-
-    public void ack(Object id) {
-        System.out.println("----- ACKED detected at "+ this.task +" for "+id.toString()+this.tobeconfirmed.get(id).toString());
-        this.tobeconfirmed.remove(id);
-    }
-
-    public void fail(Object id) {
-        System.out.println("----- FAILED detected at "+ this.task +" - re-emitting "+id.toString()+this.tobeconfirmed.get(id).toString());
-        this.collector.emit(this.tobeconfirmed.get(id), id);
+        // outputFieldsDeclarer.declareStream("secondary", true, new Fields("publication"));
     }
 
 }

@@ -22,7 +22,7 @@ public class PublicationAvg {
         this.count = 0;
     }
 
-    public void addPublication(Publication publication)
+    public void addPublication(@org.jetbrains.annotations.NotNull Publication publication)
     {
         if (publication.getCity().equals(this.city))
         {

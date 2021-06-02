@@ -3,20 +3,10 @@ package utils;
 public class Constant {
     public static final String SPOUT_ID = "source_spout";
     public static final String AVG_BOLT_ID = "parser_bolt";
-    public static final String TEMP_BOLT_ID = "avg_temp_bolt";
-    public static final String WIND_BOLT_ID = "avg_wind_bolt";
-    public static final String TERMINAL_BOLT_ID = "terminal_bolt";
+    public static final String TERMINAL_AVG_BOLT_ID = "terminal_avg_bolt";
+    public static final String TERMINAL_REG_BOLT_ID = "terminal_reg_bolt";
 
-    /* Publications helper strings*//*
-(stationId," + stationId +
-                "),(city,\"" + city + '\"' +
-                "),(temp," + temp +
-                "),(rain," + rain +
-                "),(wind," + wind +
-                "),(direction,\"" + direction + '\"' +
-                "),(data," + data +
-                ")}";
-* */
+
     public static final String StationId = "stationId";
     public static final String City = "city";
     public static final String Temp = "temp";
@@ -29,4 +19,8 @@ public class Constant {
     public static final String Data = "data";
 
     public static final String MaxTuplesAvg = "max_tuples_window";
+
+
+    public static final String RegBrokerListenTopic = "/reg_broker/listen";
+    public static final String AvgBrokerListenTopic = "/avg_broker/listen";
 }

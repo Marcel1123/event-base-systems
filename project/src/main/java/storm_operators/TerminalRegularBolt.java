@@ -1,5 +1,6 @@
 package storm_operators;
 
+import brokers.BrokerRegular;
 import brokers.IBroker;
 import lombok.SneakyThrows;
 import models.Publication;
@@ -12,13 +13,14 @@ import org.apache.storm.tuple.Tuple;
 
 import java.util.Map;
 
-public class TerminalAverageBolt extends BaseRichBolt {
+public class TerminalRegularBolt extends BaseRichBolt {
     private OutputCollector collector;
     private IBroker broker;
 
     @SneakyThrows
     @Override
-    public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
+    public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector)
+    {
         this.collector = outputCollector;
         broker.startBroker();
         broker.startPublisher();
@@ -26,11 +28,11 @@ public class TerminalAverageBolt extends BaseRichBolt {
     }
 
     @Override
-    public void execute(Tuple input) {
-        // System.out.println("Terminal entered");
-        // System.out.println("TerminalAverageBolt entered received input from: " + input.getSourceStreamId());
-        PublicationAvg avg_pub = (PublicationAvg)input.getValueByField("publication_avg");
-        this.broker.process(avg_pub);
+    public void execute(Tuple input)
+    {
+        //System.out.println("TerminalRegularBolt entered received input from: " +input.getSourceStreamId());
+        Publication publication = (Publication)input.getValueByField("publication");
+        broker.process(publication);
     }
 
     @Override
@@ -41,8 +43,7 @@ public class TerminalAverageBolt extends BaseRichBolt {
     public void cleanup() {
         System.out.println("Topology Result:");
     }
-
-    public TerminalAverageBolt(final IBroker broker)
+    public TerminalRegularBolt(IBroker broker)
     {
         this.broker = broker;
     }
