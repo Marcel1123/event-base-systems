@@ -41,7 +41,7 @@ class StringFilter(FieldFilter):
 
 class StationIdFilter(NumericFilter):
     def __init__(self):
-        super(StationIdFilter, self).__init__("stationid")
+        super(StationIdFilter, self).__init__("stationId")
         self.value = c_list_of_station_ids[random.randint(0, len(c_list_of_station_ids))]
 
 
