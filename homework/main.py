@@ -37,6 +37,15 @@ if not subscription.isValid():
 
 #while(True):
 #	print("Send message: " + subscription.__str__())
+
+
+
+
+''' A client shold publish a message with the following format to the two borkers (/reg_broker/listen, /avg_broker/listen) :
+		pattern = client_id: <client_id>, subscription: <subscription>
+    and should start subscribing to publication/<client_id> in order to receive all the messages from the brokers.
+'''
+
 #client.publish("/reg_broker/listen", "client_id: client2, subscription:{(city,=,\"Iasi\");(avg_wind,>=,13)}")
 client.publish("/avg_broker/listen", "client_id: client2, subscription:"+subscription.__str__())
 #	time.sleep(1)
