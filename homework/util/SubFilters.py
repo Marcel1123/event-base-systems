@@ -32,6 +32,7 @@ class NumericFilter(FieldFilter):
         self.operator = c_list_of_numeric_operators[random.randint(0, len(c_list_of_numeric_operators))]
         self.ValueType = FilterValueTypeEnum.NUMERIC
 
+
 class StringFilter(FieldFilter):
     def __init__(self, name):
         super(StringFilter, self).__init__(name)
@@ -60,6 +61,12 @@ class TemperatureFilter(NumericFilter):
         self.value = random.randint(c_temp_min, c_temp_max)
 
 
+class AvgTemperatureFilter(NumericFilter):
+    def __init__(self):
+        super(AvgTemperatureFilter, self).__init__("avg_temp")
+        self.value = random.randint(c_temp_min, c_temp_max)
+
+
 class RainFilter(NumericFilter):
     def __init__(self):
         super(RainFilter, self).__init__("rain")
@@ -67,9 +74,22 @@ class RainFilter(NumericFilter):
         self.operator = "="
 
 
+class AvgRainFilter(NumericFilter):
+    def __init__(self):
+        super(AvgRainFilter, self).__init__("avg_rain")
+        self.value = float(random.randint(c_temp_min, c_rain_max))/100
+
+
 class WindFilter(NumericFilter):
     def __init__(self):
         super(WindFilter, self).__init__("wind")
+        self.value = random.randint(c_wind_km_h_min, c_wind_km_h_max)
+        self.operator = "="
+
+
+class AvgWindFilter(NumericFilter):
+    def __init__(self):
+        super(AvgWindFilter, self).__init__("avg_wind")
         self.value = random.randint(c_wind_km_h_min, c_wind_km_h_max)
         self.operator = "="
 

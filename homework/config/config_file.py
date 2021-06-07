@@ -18,3 +18,10 @@ frequency_dict = {
     FieldsEnum.DIRECTION: 0.6,
     FieldsEnum.DATE: 0.7
 }
+
+complex_sub_frequency_for_fields_dict = {
+    ComplexPublicationEnum.CITY: 1,
+    ComplexPublicationEnum.AVG_TEMP: 0.9,
+    ComplexPublicationEnum.AVG_RAIN: 0.1,
+    ComplexPublicationEnum.AVG_WIND: 0.2
+}

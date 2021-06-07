@@ -17,6 +17,13 @@ class FieldsEnum(enum.Enum):
     DATE = 7
 
 
+class ComplexPublicationEnum(enum.Enum):
+    CITY = 8
+    AVG_TEMP = 9
+    AVG_RAIN = 10
+    AVG_WIND = 11
+
+
 class FilterValueTypeEnum(enum.Enum):
     NUMERIC = 1
     STRING = 2

@@ -2,24 +2,15 @@ import brokers.BrokerAverage;
 import brokers.BrokerRegular;
 import brokers.IBroker;
 import lombok.SneakyThrows;
-import models.Publication;
-import models.TPublication;
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
 import org.apache.storm.generated.StormTopology;
 import org.apache.storm.topology.TopologyBuilder;
-import org.apache.thrift.TDeserializer;
-import org.apache.thrift.TSerializer;
-import org.apache.thrift.protocol.TBinaryProtocol;
 import storm_operators.AverageBolt;
 import storm_operators.SourcePublicationSpout;
 import storm_operators.TerminalAverageBolt;
 import storm_operators.TerminalRegularBolt;
-import utils.generators.PublicationGenerator;
 
-import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static utils.Constant.*;
 
 public class App {

@@ -1,6 +1,39 @@
 from config.config_file import *
 from models.Subscription import Subscription
+from models.ComplexSubscription import ComplexSubscription
 from numpy import random
+
+
+def generate_complex_subscription():
+    complex_subscription = None
+    is_subscription_valid = False
+    while not is_subscription_valid:
+        complex_subscription = ComplexSubscription()
+        for enum_filed in ComplexPublicationEnum:
+
+            prob_of_using_filed = complex_sub_frequency_for_fields_dict[enum_filed]
+            coin_toss = random.binomial(1, prob_of_using_filed, size=None)
+
+            if coin_toss:
+                complex_subscription.setFiled(enum_filed)
+        is_subscription_valid = complex_subscription.isValid()
+
+    return complex_subscription
+
+
+def generate_subscription():
+    subscription = None
+    is_subscription_valid = False
+    while not is_subscription_valid:
+        subscription = Subscription()
+        for enum_filed in FieldsEnum:
+            prob_of_using_filed = frequency_dict[enum_filed]
+            coin_toss = random.binomial(1, prob_of_using_filed, size=None)
+
+            if coin_toss:
+                subscription.setFiled(enum_filed)
+        is_subscription_valid = subscription.isValid()
+    return subscription
 
 
 def generate_subscriptions():

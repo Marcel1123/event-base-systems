@@ -7,7 +7,9 @@ import paho.mqtt.client as mqtt
 from numpy import random
 
 from config.config_file import *
+from models.ComplexSubscription import ComplexSubscription
 from models.Subscription import Subscription
+from generators.subs_generator import *
 
 number_of_subscriptions_generated = 0
 number_of_publications_readed = 0
@@ -44,23 +46,18 @@ class Subscriber:
 			self.broker_id = f"/reg_broker/listen"
 
 	def generate_subscription(self):
-		subscription = Subscription()
-		for enum_filed in FieldsEnum:
-			prob_of_using_filed = frequency_dict[enum_filed]
-			coin_toss = random.binomial(1, prob_of_using_filed, size=None)
-
-			if coin_toss:
-				subscription.setFiled(enum_filed)
-
-		if not subscription.isValid():
-			subscription.setFiled(random.choice(FieldsEnum))
+		subscription = None
+		if random.uniform(0, 1) > 0.5:
+			subscription = generate_subscription()
+		else:
+			subscription = generate_complex_subscription()
 		self.subscription = subscription
 
 	def publish(self):
 		subs = "{(city,!=,\"Suceava\")}"
 		self.client.publish(self.broker_id, f"client_id: client{self.id}, subscription:{self.subscription.__str__()}")
-		time.sleep(0.01)
 		# self.client.publish(self.broker_id, f"client_id: client{self.id}, subscription:{subs}")
+		time.sleep(0.01)
 		# time.sleep(2)
 
 	def stop(self):
