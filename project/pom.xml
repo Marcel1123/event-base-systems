@@ -96,6 +96,12 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.thrift</groupId>
+            <artifactId>libthrift</artifactId>
+            <version>0.14.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -142,17 +148,53 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <!--Note - the version would be inherited-->
+                <groupId>org.apache.thrift.tools</groupId>
+                <artifactId>maven-thrift-plugin</artifactId>
+                <version>0.1.11</version>
                 <configuration>
-                    <maxAllowedViolations>0</maxAllowedViolations>
+                     <thriftExecutable>${basedir}/thrift-0.14.1</thriftExecutable>
+                    <thriftSourceRoot>${basedir}/src/main/resources/thrift</thriftSourceRoot>
+                    <generator>java</generator>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>thrift-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                    <mainClass>org.example.EventLogger</mainClass>
                 </configuration>
             </plugin>
+
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-checkstyle-plugin</artifactId>-->
+<!--                &lt;!&ndash;Note - the version would be inherited&ndash;&gt;-->
+<!--                <configuration>-->
+<!--                    <maxAllowedViolations>0</maxAllowedViolations>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>Maven Central Repository</id>
+            <name>Maven Central Repository</name>
+            <url>http://central.maven.org/maven2/</url>
+        </repository>
+    </repositories>
 </project>

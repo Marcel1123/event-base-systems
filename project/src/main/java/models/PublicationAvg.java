@@ -22,6 +22,15 @@ public class PublicationAvg {
         this.count = 0;
     }
 
+    public PublicationAvg(TPublicationAVG tPublicationAVG)
+    {
+        this.city = tPublicationAVG.getCity();
+        this.temp_avg = tPublicationAVG.getTemp_avg();
+        this.rain_avg = tPublicationAVG.getRain_avg();
+        this.wind_avg = tPublicationAVG.getWind_avg();
+        this.count = tPublicationAVG.getCount();
+    }
+
     public void addPublication(@org.jetbrains.annotations.NotNull Publication publication)
     {
         if (publication.getCity().equals(this.city))

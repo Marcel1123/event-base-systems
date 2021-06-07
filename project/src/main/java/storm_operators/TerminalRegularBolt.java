@@ -5,12 +5,17 @@ import brokers.IBroker;
 import lombok.SneakyThrows;
 import models.Publication;
 import models.PublicationAvg;
+import models.TPublication;
 import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseRichBolt;
 import org.apache.storm.tuple.Tuple;
+import utils.Serialization;
+import utils.generators.PublicationGenerator;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 public class TerminalRegularBolt extends BaseRichBolt {
@@ -31,8 +36,18 @@ public class TerminalRegularBolt extends BaseRichBolt {
     public void execute(Tuple input)
     {
         //System.out.println("TerminalRegularBolt entered received input from: " +input.getSourceStreamId());
-        Publication publication = (Publication)input.getValueByField("publication");
-        broker.process(publication);
+        byte[] publication = (byte[])input.getValueByField("publication");
+        TPublication publication1 = Serialization.deserialize(publication);
+        Publication publication2 = Publication.builder()
+                .direction(publication1.getDirection())
+                .city(publication1.getCity())
+                .rain(publication1.getRain())
+                .wind(publication1.getWind())
+                .temp(publication1.getTemp())
+                .stationId(publication1.getStationId())
+                .data(new Date(Long.parseLong(publication1.getDate())))
+                .build();
+        broker.process(publication2);
     }
 
     @Override

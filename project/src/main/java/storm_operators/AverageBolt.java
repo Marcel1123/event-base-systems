@@ -2,6 +2,8 @@ package storm_operators;
 
 import models.Publication;
 import models.PublicationAvg;
+import models.TPublication;
+import models.TPublicationAVG;
 import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
@@ -10,8 +12,11 @@ import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
 import org.apache.storm.tuple.Values;
 import utils.Constant;
+import utils.Serialization;
+import utils.generators.PublicationGenerator;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 
 import java.util.Map;
@@ -42,14 +47,24 @@ public class AverageBolt extends BaseRichBolt {
 
     @Override
     public void execute(Tuple tuple) {
-        Publication pub = (Publication)tuple.getValueByField("publication");
+        byte[] publication = (byte[])tuple.getValueByField("publication");
+        TPublication pub = Serialization.deserialize(publication);
+        Publication publication2 = Publication.builder()
+                .direction(pub.getDirection())
+                .city(pub.getCity())
+                .rain(pub.getRain())
+                .wind(pub.getWind())
+                .temp(pub.getTemp())
+                .stationId(pub.getStationId())
+                .data(new Date(Long.parseLong(pub.getDate())))
+                .build();
         // System.out.println("Bolt entered");
         // System.out.println(pub);
         tuple_counter += 1;
         if(tuple_counter < tuple_max_count)
         {
             PublicationAvg avg_pub_to_put = city_avg_pub_map.getOrDefault(pub.getCity(), new PublicationAvg(pub.getCity()));
-            avg_pub_to_put.addPublication(pub);
+            avg_pub_to_put.addPublication(publication2);
             city_avg_pub_map.put(pub.getCity(),avg_pub_to_put);
             //System.out.println("AVG BOLT Put: " + city_avg_pub_map);
         }
@@ -59,7 +74,8 @@ public class AverageBolt extends BaseRichBolt {
             for (PublicationAvg pub_avg : city_avg_pub_map.values())
             {
                 // System.out.println("AVG BOLT emit: " + pub_avg);
-                this.collector.emit(new Values(pub_avg));
+                TPublicationAVG tPublicationAVG = new TPublicationAVG(pub_avg);
+                this.collector.emit(new Values((Object) Serialization.serialize(tPublicationAVG)));
             }
             city_avg_pub_map.clear();
             tuple_counter = 0L;

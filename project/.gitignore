@@ -1,3 +1,4 @@
 project.iml
 .idea
 target
+thrift-0.14.1

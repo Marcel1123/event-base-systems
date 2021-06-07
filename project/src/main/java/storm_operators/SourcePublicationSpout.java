@@ -2,6 +2,7 @@ package storm_operators;
 
 import lombok.SneakyThrows;
 import models.Publication;
+import models.TPublication;
 import org.apache.storm.spout.SpoutOutputCollector;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
@@ -9,6 +10,7 @@ import org.apache.storm.topology.base.BaseRichSpout;
 import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Values;
 import utils.Constant;
+import utils.Serialization;
 import utils.generators.PublicationGenerator;
 
 import java.util.HashMap;
@@ -37,10 +39,12 @@ public class SourcePublicationSpout extends BaseRichSpout {
     @SneakyThrows
     @Override
     public void nextTuple() {
-        Publication publication = PublicationGenerator.createNewPublication();
         //Publication global_publication = publication;
         // System.out.println(publication);
-        this.collector.emit(new Values(publication));
+
+        TPublication publication1 = new TPublication(PublicationGenerator.createNewPublication());
+
+        this.collector.emit(new Values((Object) Serialization.serialize(publication1)));
         //this.collector.emitDirect((int)tasks.get(0), "secondary", new Values(publication));
         // Thread.sleep(50);
     }

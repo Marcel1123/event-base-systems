@@ -174,7 +174,7 @@ public final class BrokerRegular extends AbstractBroker {
     protected synchronized void publish(String topic, Publication publication) throws Exception {
         System.out.println("Publishing to topic: "+ topic);
         System.out.println("Cntrl+C to exit.");
-        String payload = publication.toString();
+        String payload = publication.toString() + "<>" + System.currentTimeMillis();
 
         connection.publish(topic,
                 payload.getBytes(),
@@ -189,7 +189,7 @@ public final class BrokerRegular extends AbstractBroker {
     protected synchronized void publish(String topic, PublicationAvg publication_avg) throws Exception {
         System.out.println("Publishing to topic: "+ topic);
         System.out.println("Cntrl+C to exit.");
-        String payload = "(" + publication_avg.toString() +")= true)";
+        String payload = "(" + publication_avg.toString() +")= true)"  + "<>" + System.currentTimeMillis();
 
         connection.publish(topic,
                 payload.getBytes(),

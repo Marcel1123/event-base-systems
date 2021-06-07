@@ -4,11 +4,13 @@ import brokers.IBroker;
 import lombok.SneakyThrows;
 import models.Publication;
 import models.PublicationAvg;
+import models.TPublicationAVG;
 import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseRichBolt;
 import org.apache.storm.tuple.Tuple;
+import utils.Serialization;
 
 import java.util.Map;
 
@@ -29,8 +31,10 @@ public class TerminalAverageBolt extends BaseRichBolt {
     public void execute(Tuple input) {
         // System.out.println("Terminal entered");
         // System.out.println("TerminalAverageBolt entered received input from: " + input.getSourceStreamId());
-        PublicationAvg avg_pub = (PublicationAvg)input.getValueByField("publication_avg");
-        this.broker.process(avg_pub);
+        byte[] avg_pub = (byte[]) input.getValueByField("publication_avg");
+        TPublicationAVG tPublicationAVG = Serialization.deserializeAVG(avg_pub);
+        PublicationAvg publicationAvg = new PublicationAvg(tPublicationAVG);
+        this.broker.process(publicationAvg);
     }
 
     @Override
